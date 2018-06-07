@@ -38,6 +38,7 @@ CREATE TABLE agendamento (
     CHECK (pagamento = 'PENDENTE' OR pagamento = 'REALIZADO')
 );
 
+
 CREATE TABLE agendamento_servico (
     agendamento_id INT NOT NULL,
     servico_id INT NOT NULL,
@@ -45,6 +46,7 @@ CREATE TABLE agendamento_servico (
     FOREIGN KEY(agendamento_id) REFERENCES agendamento(id),
     FOREIGN KEY(servico_id) REFERENCES servico(id)
 );
+
 
 CREATE TRIGGER ucase_insert BEFORE INSERT ON usuario FOR EACH ROW
 SET NEW.email = LOWER(NEW.email), NEW.senha = UPPER(NEW.senha), NEW.salt = UPPER(NEW.salt);
@@ -58,6 +60,22 @@ SET NEW.situacao = UPPER(NEW.situacao), NEW.pagamento = UPPER(NEW.pagamento);
 CREATE TRIGGER ccase_update BEFORE UPDATE ON agendamento FOR EACH ROW
 SET NEW.situacao = UPPER(NEW.situacao), NEW.pagamento = UPPER(NEW.pagamento);
 
+
+/*###################################################################################
+				                INSERTS VALUES TABLE
+###################################################################################*/
+
+
+INSERT INTO agendamento_servico(agendamento_id, servico_id)
+VALUES (8,1);
+
+INSERT INTO agendamento(usuario_id, horario, situacao, pagamento)
+VALUES(2, '21:34:22', 'MARCADO', 'REALIZADO');
+
+INSERT INTO agendamento(usuario_id, horario, situacao, pagamento)
+VALUES(3, '13:34:22', 'MARCADO', 'PENDENTE');
+
+
 INSERT INTO usuario (nome, cpf, email, senha, salt, cargo)
 VALUES ('Admin',
         '00000000000',
@@ -65,10 +83,21 @@ VALUES ('Admin',
         '8C6976E5B5410415BDE908BD4DEE15DFB167A9C873FC4BB8A81F6F2AB448A918',
         '9FCD52BABCE64865C7FF54FEE0B2F85E27E2EFF3F2C4D6FE8A22442FBE64B80B5F54B3EEEE6CD327C899EBD558FE3635',
         'FUNCIONARIO');
-        
+
+
+INSERT INTO usuario (nome, cpf, email, senha, salt, cargo)
+VALUES ('Admin2',
+        '00000000000',
+        'admin2@barbershop.com',
+        '8C6976E5B5410415BDE908BD4DEE15DFB167A9C873FC4BB8A81F6F2AB448A918',
+        '9FCD52BABCE64865C7FF54FEE0B2F85E27E2EFF3F2C4D6FE8A22442FBE64B80B5F54B3EEEE6CD327C899EBD558FE3635',
+        'CLIENTE');
+
+
 INSERT INTO servico (nome, descricao, valor)
 VALUES  ('Corte de Cabelo', 'Corte seu cabelo como em nenhum outro lugar', 20.00),
         ('Hidratação', 'Hidrate seu cabelo como em nenhum outro lugar', 15.00);
+        ('Limpeza de pele', 'Procedimento estético tem como principal foco a remoção dos comedões', 30.00);
         
 -- INSERT INTO servico (descricao, valor)
 -- VALUES  ("Corte de Cabelo", 20.00),
